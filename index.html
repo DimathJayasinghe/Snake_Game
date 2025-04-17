@@ -4,30 +4,76 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="gamestart-message" class="hidden">
-        <h1>SNAKE MINI GAME</h1>
-        <p>Built by Dimath Jayasinghe</p>
+    <div class="game-container">
+        <div id="container">
+            <div id="gamestart-message" class="hidden">
+                <h1>SNAKE MINI GAME</h1>
+                <p>Built by Dimath Jayasinghe</p>
+            </div>
+            <div id="score-display">
+                <span id="score-label">Score:</span>
+                <span id="score-value">0</span>
+            </div>
+            <div id="game-board">
+                <div id="snake"></div>
+                <div id="food"></div>
+            </div>
+            <div id="gameover-message" class="hidden">
+                <p>Game Over!</p>
+                <p>Your score: <span id="final-score"></span></p>
+                <button id="restart-button">Restart</button>
+            </div>
+        </div>
+        <div class="controls">
+            <p>Use arrow keys to control the snake</p>
+            <p>Press any key to start</p>
+        </div>
+        <input type="button" id="show-gamesettings" value="Game Settings">
+    </div>
+    
+    <div id="change-parameters" class="hidden">
+        <h2>Game Settings</h2>
+        <div class="parameter-input">
+            <label for="speed">Speed:</label>
+            <input type="number" id="speed" value="100" min="50" max="500">
+        </div>
+        <div class="parameter-input">
+            <label for="size">Size:</label>
+            <input type="number" id="size" value="20" min="10" max="50">
+        </div>
+        <div class="parameter-input">
+            <label for="food-color">Food Color:</label>
+            <input type="color" id="food-color" value="#ff0000">
+        </div>
+        <div class="parameter-input">
+            <label for="snake-color">Snake Color:</label>
+            <input type="color" id="snake-color" value="#00ff00">
+        </div>
+        <div class="parameter-buttons">
+            <button id="apply-parameters">Apply</button>
+            <button id="reset-parameters">Reset</button>
+        </div>
+    </div>
 
-    </div>
-    <div id="container">
-        <div id="score-display">
-            <span id="score-label">Score:</span>
-            <span id="score-value">0</span>
-        </div>
-        <div id="game-board">
-            <div id="snake"></div>
-            <div id="food"></div>
-        </div>
-    </div>
-    <div class="controls">
-        <p>Use arrow keys to control the snake</p>
-        <p>Press any key to start</p>
-    </div>
-    <div id="gameover-message" class="hidden">
-        <p>Game Over!</p>
-        <p>Your score: <span id="final-score"></span></p>
-        <button id="restart-button">Restart</button>
-    </div>
-</body>
+    <audio id="bg-music" preload="auto" loop>
+        <source src="./Assest/Audio/bgAudio.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="game-start-audio" preload="auto">
+        <source src="./Assest/Audio/game-start.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="game-over-audio" preload="auto">
+        <source src="./Assest/Audio/game-over.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="food-eaten-audio" preload="auto">
+        <source src="./Assest/Audio/food-eaten.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="food-popup-audio" preload="auto">
+        <source src="./Assest/Audio/food-popup.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="settings-changed-audio" preload="auto">
+        <source src="./Assest/Audio/settings-changed.mp3" type="audio/mpeg">
+    </audio>
+
 <script src="script.js"></script>
+</body>
 </html>
