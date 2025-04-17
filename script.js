@@ -5,66 +5,79 @@ class canvas {
     this.canvas.height = 600;
     this.ctx = this.canvas.getContext("2d");
     document.getElementById("container").appendChild(this.canvas);
+    this.gameBoard = document.getElementById("game-board");
+    this.snakeElement = document.getElementById("snake");
+    this.foodElement = document.getElementById("food");
   }
+
   drawSnake(snake) {
-    this.ctx.fillStyle = "#2ecc71";
-    this.ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-    this.ctx.shadowBlur = 5;
-
-    const head = snake[0];
-    this.ctx.fillRect(head.x * 20, head.y * 20, 20, 20);
-
-    this.ctx.fillStyle = "#27ae60";
-    for (let i = 1; i < snake.length; i++) {
-      this.ctx.fillRect(snake[i].x * 20, snake[i].y * 20, 20, 20);
-    }
-
-    this.ctx.shadowBlur = 0;
-
-    this.ctx.fillStyle = "white";
-    const eyeSize = 4;
-
-    if (snake.length > 1) {
-      if (head.x > snake[1].x) {
-        this.ctx.fillRect(head.x * 20 + 12, head.y * 20 + 4, eyeSize, eyeSize);
-        this.ctx.fillRect(head.x * 20 + 12, head.y * 20 + 12, eyeSize, eyeSize);
-      } else if (head.x < snake[1].x) {
-        this.ctx.fillRect(head.x * 20 + 4, head.y * 20 + 4, eyeSize, eyeSize);
-        this.ctx.fillRect(head.x * 20 + 4, head.y * 20 + 12, eyeSize, eyeSize);
-      } else if (head.y > snake[1].y) {
-        this.ctx.fillRect(head.x * 20 + 4, head.y * 20 + 12, eyeSize, eyeSize);
-        this.ctx.fillRect(head.x * 20 + 12, head.y * 20 + 12, eyeSize, eyeSize);
-      } else {
-        this.ctx.fillRect(head.x * 20 + 4, head.y * 20 + 4, eyeSize, eyeSize);
-        this.ctx.fillRect(head.x * 20 + 12, head.y * 20 + 4, eyeSize, eyeSize);
+    // Clear existing snake segments
+    this.snakeElement.innerHTML = '';
+    
+    // Create snake segments as div elements
+    snake.forEach((segment, index) => {
+      const snakeSegment = document.createElement('div');
+      snakeSegment.className = index === 0 ? 'snake-segment snake-head' : 'snake-segment';
+      snakeSegment.style.left = `${segment.x * 20}px`;
+      snakeSegment.style.top = `${segment.y * 20}px`;
+      
+      // Add eyes to the snake head
+      if (index === 0) {
+        const eye1 = document.createElement('div');
+        const eye2 = document.createElement('div');
+        eye1.className = 'snake-eye';
+        eye2.className = 'snake-eye';
+        
+        // Position eyes based on direction
+        if (snake.length > 1) {
+          if (segment.x > snake[1].x) { // Moving right
+            eye1.style.left = '12px';
+            eye1.style.top = '4px';
+            eye2.style.left = '12px';
+            eye2.style.top = '12px';
+          } else if (segment.x < snake[1].x) { // Moving left
+            eye1.style.left = '4px';
+            eye1.style.top = '4px';
+            eye2.style.left = '4px';
+            eye2.style.top = '12px';
+          } else if (segment.y > snake[1].y) { // Moving down
+            eye1.style.left = '4px';
+            eye1.style.top = '12px';
+            eye2.style.left = '12px';
+            eye2.style.top = '12px';
+          } else { // Moving up
+            eye1.style.left = '4px';
+            eye1.style.top = '4px';
+            eye2.style.left = '12px';
+            eye2.style.top = '4px';
+          }
+        }
+        
+        snakeSegment.appendChild(eye1);
+        snakeSegment.appendChild(eye2);
       }
-    }
+      
+      this.snakeElement.appendChild(snakeSegment);
+    });
   }
 
   drawFood(food) {
-    const x = food.x * 20;
-    const y = food.y * 20;
-
-    this.ctx.shadowColor = "rgba(231, 76, 60, 0.8)";
-    this.ctx.shadowBlur = 10;
-
-    this.ctx.fillStyle = "#e74c3c";
-    this.ctx.beginPath();
-    this.ctx.arc(x + 10, y + 10, 8, 0, Math.PI * 2);
-    this.ctx.fill();
-
-    this.ctx.fillStyle = "#7f8c8d";
-    this.ctx.fillRect(x + 10, y + 2, 2, 4);
-
-    this.ctx.shadowBlur = 0;
+    // Update food position
+    this.foodElement.style.left = `${food.x * 20}px`;
+    this.foodElement.style.top = `${food.y * 20}px`;
+    
+    // Ensure food is visible
+    this.foodElement.classList.remove('hidden');
   }
 
   drawScore(score) {
-    this.ctx.fillStyle = "#2c3e50";
-    this.ctx.font = "bold 20px Arial";
-    this.ctx.fillText("Score: " + score, 10, 25);
+    const scoreValue = document.getElementById('score-value');
+    if (scoreValue) {
+      scoreValue.textContent = score;
+    }
   }
 }
+
 class Snake {
   constructor() {
     this.snakeBoxes = [
@@ -172,6 +185,7 @@ class Game {
     this.score = this.snake.score;
 
     this.canvas.drawFood(this.food);
+    this.canvas.drawSnake(this.snake.snakeBoxes);
 
     this.gameSpeed;
     this.gameActive = false;
@@ -179,17 +193,30 @@ class Game {
   }
 
   startGame() {
+    // Hide the start message when game begins
+    const gameStartMsg = document.getElementById('gamestart-message');
+    if (gameStartMsg) {
+      gameStartMsg.classList.add('hidden');
+    }
+    
     this.gameStarted = true;
     this.gameActive = true;
     this.gameSpeed = 10;
     this.snake.food.generateFood(this.snake.snakeBoxes);
+    // Clear canvas but keep our HTML elements
     this.canvas.ctx.clearRect(
       0,
       0,
       this.canvas.canvas.width,
       this.canvas.canvas.height
     );
+    const scoreDisplay = document.getElementById('score-display');
+    scoreDisplay.classList.remove('hidden');
     this.snake.resetSnake();
+    
+    // Draw initial snake and food
+    this.canvas.drawSnake(this.snake.snakeBoxes);
+    this.canvas.drawFood(this.snake.food);
   }
 
   gameloop() {
@@ -202,12 +229,16 @@ class Game {
       this.checkCollision();
       this.score = this.snake.score;
       this.food = this.snake.food;
+      
+      // Clear canvas for any background effects
       this.canvas.ctx.clearRect(
         0,
         0,
         this.canvas.canvas.width,
         this.canvas.canvas.height
       );
+      
+      // Update HTML elements
       this.canvas.drawSnake(this.snake.snakeBoxes);
       this.canvas.drawFood(this.food);
       this.canvas.drawScore(this.score);
@@ -229,31 +260,32 @@ class Game {
 
   endGame() {
     this.gameActive = false;
-    this.canvas.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-    this.canvas.ctx.fillRect(
-      0,
-      0,
-      this.canvas.canvas.width,
-      this.canvas.canvas.height
-    );
-
-    const gradient = this.canvas.ctx.createLinearGradient(100, 100, 300, 200);
-    gradient.addColorStop(0, "#e74c3c");
-    gradient.addColorStop(1, "#c0392b");
-    this.canvas.ctx.fillStyle = gradient;
-    this.canvas.ctx.font = "bold 40px Arial";
-    this.canvas.ctx.fillText("Game Over", 200, 280);
-
-    this.canvas.ctx.fillStyle = "white";
-    this.canvas.ctx.font = "30px Arial";
-    this.canvas.ctx.fillText("Score: " + this.snake.score, 230, 330);
-
-    this.canvas.ctx.fillStyle = "#3498db";
-    this.canvas.ctx.font = "20px Arial";
-    this.canvas.ctx.fillText("Press any key to restart", 190, 380);
+    
+    // Update the HTML-based game over screen
+    const gameOverMsg = document.getElementById('gameover-message');
+    const finalScore = document.getElementById('final-score');
+    const scoreDisplay = document.getElementById('score-display');
+    if (scoreDisplay) {
+      scoreDisplay.classList.add('hidden');
+    }
+    if (gameOverMsg && finalScore) {
+      finalScore.textContent = this.snake.score;
+      gameOverMsg.classList.remove('hidden');
+    }
+    
+    // Add event listener to restart button if it doesn't exist yet
+    const restartButton = document.getElementById('restart-button');
+    if (restartButton && !restartButton.hasAttribute('data-listener-added')) {
+      restartButton.setAttribute('data-listener-added', 'true');
+      restartButton.addEventListener('click', () => {
+        gameOverMsg.classList.add('hidden');
+        this.startGame();
+      });
+    }
   }
 
   startScreen() {
+    // Draw the checkerboard background pattern
     this.canvas.ctx.fillStyle = "rgba(52, 152, 219, 0.1)";
     for (let i = 0; i < 600/20; i++) {
       for (let j = 0; j < 600/20; j++) {
@@ -263,21 +295,13 @@ class Game {
       }
     }
 
-    this.canvas.ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-    this.canvas.ctx.shadowBlur = 10;
-    this.canvas.ctx.shadowOffsetY = 4;
-
-    this.canvas.ctx.fillStyle = "#2ecc71";
-    this.canvas.ctx.font = "bold 40px Arial";
-    this.canvas.ctx.fillText("SNAKE", 230, 250);
-
-    this.canvas.ctx.shadowBlur = 5;
-    this.canvas.ctx.fillStyle = "black";
-    this.canvas.ctx.font = "20px Arial";
-    this.canvas.ctx.fillText("Press any key to start", 200, 300);
-
-    this.canvas.ctx.shadowBlur = 0;
-    this.canvas.ctx.shadowOffsetY = 0;
+    const scoreDisplay = document.getElementById('score-display');
+    scoreDisplay.classList.add('hidden');
+    // Show the HTML-based start screen
+    const gameStartMsg = document.getElementById('gamestart-message');
+    if (gameStartMsg) {
+      gameStartMsg.classList.remove('hidden');
+    }
   }
 }
 
@@ -301,6 +325,13 @@ document.addEventListener("keydown", (event) => {
         if (currentDir !== "left") game.snake.direction = "right";
         break;
     }
+  } else if (game.gameStarted && !game.gameActive) {
+    // Hide the game over message when restarting with a key press
+    const gameOverMsg = document.getElementById('gameover-message');
+    if (gameOverMsg) {
+      gameOverMsg.classList.add('hidden');
+    }
+    game.startGame();
   } else {
     game.startGame();
   }

@@ -4,11 +4,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="gamestart-message" class="hidden">
+        <h1>SNAKE MINI GAME</h1>
+        <p>Built by Dimath Jayasinghe</p>
+
+    </div>
     <div id="container">
+        <div id="score-display">
+            <span id="score-label">Score:</span>
+            <span id="score-value">0</span>
+        </div>
+        <div id="game-board">
+            <div id="snake"></div>
+            <div id="food"></div>
+        </div>
     </div>
     <div class="controls">
         <p>Use arrow keys to control the snake</p>
         <p>Press any key to start</p>
+    </div>
+    <div id="gameover-message" class="hidden">
+        <p>Game Over!</p>
+        <p>Your score: <span id="final-score"></span></p>
+        <button id="restart-button">Restart</button>
     </div>
 </body>
 <script src="script.js"></script>
