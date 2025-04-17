@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0; 
+    padding: 0; 
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    overflow: hidden; 
+}
+
+#container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    border: 2px solid black;
+    margin-bottom: 20px;
+}
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    #snake-box {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: green;
+    }
+    .controls {
+        padding: 15px;
+        background-color: #ecf0f1;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 400px;
+    }
+
+    .controls p {
+        margin: 8px 0;
+        color: #2c3e50;
+        font-size: 16px;
+    }
+    .controls p:first-child {
+        font-weight: bold;
+    }
