@@ -1,8 +1,8 @@
 class canvas {
   constructor() {
     this.canvas = document.createElement("canvas");
-    this.canvas.width = 400;
-    this.canvas.height = 400;
+    this.canvas.width = 600;
+    this.canvas.height = 600;
     this.ctx = this.canvas.getContext("2d");
     document.getElementById("container").appendChild(this.canvas);
   }
@@ -127,7 +127,7 @@ class Snake {
   }
   checkBoundries() {
     let head = this.snakeBoxes[0];
-    if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20) {
+    if (head.x < 0 || head.x >= 600/20 || head.y < 0 || head.y >= 600/20) {
       return true;
     }
     return false;
@@ -144,8 +144,8 @@ class Food {
     let x, y;
 
     while (!validPosition) {
-      x = Math.floor(Math.random() * 20);
-      y = Math.floor(Math.random() * 20);
+      x = Math.floor(Math.random() * 600/20);
+      y = Math.floor(Math.random() * 600/20);
 
       validPosition = true;
       if (snakeBoxes.length > 0) {
@@ -173,7 +173,7 @@ class Game {
 
     this.canvas.drawFood(this.food);
 
-    this.gameSpeed = 4;
+    this.gameSpeed;
     this.gameActive = false;
     this.gameStarted = false;
   }
@@ -181,7 +181,7 @@ class Game {
   startGame() {
     this.gameStarted = true;
     this.gameActive = true;
-    this.gameSpeed = 4;
+    this.gameSpeed = 10;
     this.snake.food.generateFood(this.snake.snakeBoxes);
     this.canvas.ctx.clearRect(
       0,
@@ -242,21 +242,21 @@ class Game {
     gradient.addColorStop(1, "#c0392b");
     this.canvas.ctx.fillStyle = gradient;
     this.canvas.ctx.font = "bold 40px Arial";
-    this.canvas.ctx.fillText("Game Over", 90, 180);
+    this.canvas.ctx.fillText("Game Over", 200, 280);
 
     this.canvas.ctx.fillStyle = "white";
     this.canvas.ctx.font = "30px Arial";
-    this.canvas.ctx.fillText("Score: " + this.snake.score, 140, 230);
+    this.canvas.ctx.fillText("Score: " + this.snake.score, 230, 330);
 
     this.canvas.ctx.fillStyle = "#3498db";
     this.canvas.ctx.font = "20px Arial";
-    this.canvas.ctx.fillText("Press any key to restart", 100, 280);
+    this.canvas.ctx.fillText("Press any key to restart", 190, 380);
   }
 
   startScreen() {
     this.canvas.ctx.fillStyle = "rgba(52, 152, 219, 0.1)";
-    for (let i = 0; i < 20; i++) {
-      for (let j = 0; j < 20; j++) {
+    for (let i = 0; i < 600/20; i++) {
+      for (let j = 0; j < 600/20; j++) {
         if ((i + j) % 2 === 0) {
           this.canvas.ctx.fillRect(i * 20, j * 20, 20, 20);
         }
@@ -269,12 +269,12 @@ class Game {
 
     this.canvas.ctx.fillStyle = "#2ecc71";
     this.canvas.ctx.font = "bold 40px Arial";
-    this.canvas.ctx.fillText("SNAKE", 130, 150);
+    this.canvas.ctx.fillText("SNAKE", 230, 250);
 
     this.canvas.ctx.shadowBlur = 5;
     this.canvas.ctx.fillStyle = "black";
     this.canvas.ctx.font = "20px Arial";
-    this.canvas.ctx.fillText("Press any key to start", 100, 200);
+    this.canvas.ctx.fillText("Press any key to start", 200, 300);
 
     this.canvas.ctx.shadowBlur = 0;
     this.canvas.ctx.shadowOffsetY = 0;
