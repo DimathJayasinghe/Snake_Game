@@ -28,48 +28,63 @@
             <p>Use arrow keys to control the snake</p>
             <p>Press any key to start</p>
         </div>
+        
+        <!-- Button to toggle game settings panel visibility -->
         <input type="button" id="show-gamesettings" value="Game Settings">
     </div>
     
+    <!-- Game settings panel - hidden by default -->
     <div id="change-parameters" class="hidden">
         <h2>Game Settings</h2>
+        <!-- Speed control - affects how fast the snake moves -->
         <div class="parameter-input">
             <label for="speed">Speed:</label>
             <input type="number" id="speed" value="100" min="50" max="500">
         </div>
+        <!-- Size control - affects grid cell size and snake segment dimensions -->
         <div class="parameter-input">
             <label for="size">Size:</label>
             <input type="number" id="size" value="20" min="10" max="50">
         </div>
+        <!-- Food color picker - changes the color of food items -->
         <div class="parameter-input">
             <label for="food-color">Food Color:</label>
             <input type="color" id="food-color" value="#ff0000">
         </div>
+        <!-- Snake color picker - changes the color of snake body -->
         <div class="parameter-input">
             <label for="snake-color">Snake Color:</label>
             <input type="color" id="snake-color" value="#00ff00">
         </div>
+        <!-- Buttons to apply or reset settings -->
         <div class="parameter-buttons">
             <button id="apply-parameters">Apply</button>
             <button id="reset-parameters">Reset</button>
         </div>
     </div>
 
+    <!-- Audio elements for game sounds -->
+    <!-- Background music that plays during gameplay -->
     <audio id="bg-music" preload="auto" loop>
         <source src="./Assest/Audio/bgAudio.mp3" type="audio/mpeg">
     </audio>
+    <!-- Sound effect for when the game starts -->
     <audio id="game-start-audio" preload="auto">
         <source src="./Assest/Audio/game-start.mp3" type="audio/mpeg">
     </audio>
+    <!-- Sound effect for game over state -->
     <audio id="game-over-audio" preload="auto">
         <source src="./Assest/Audio/game-over.mp3" type="audio/mpeg">
     </audio>
+    <!-- Sound effect for when the snake eats food -->
     <audio id="food-eaten-audio" preload="auto">
         <source src="./Assest/Audio/food-eaten.mp3" type="audio/mpeg">
     </audio>
+    <!-- Sound effect for when new food appears -->
     <audio id="food-popup-audio" preload="auto">
         <source src="./Assest/Audio/food-popup.mp3" type="audio/mpeg">
     </audio>
+    <!-- Sound effect for when game settings are changed -->
     <audio id="settings-changed-audio" preload="auto">
         <source src="./Assest/Audio/settings-changed.mp3" type="audio/mpeg">
     </audio>
